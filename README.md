@@ -31,4 +31,6 @@ XaringanExtra: <https://github.com/gadenbuie/xaringanExtra>
 
 ### Contacto
 
+leonardo.beltran@st.ib.unam.mx
+
 gmartinez@gradcenter.cuny.edu
