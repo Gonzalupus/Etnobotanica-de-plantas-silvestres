@@ -1,0 +1,1040 @@
+---
+title: "Etnobotánica práctica"
+author: "Gonzalo Martínez"
+output:
+  xaringan::moon_reader:
+    seal: false
+    css: [default, rutgers, rutgers-fonts_small.css]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+
+---
+class: right, middle
+background-image: url("hex.png")
+background-position: center top
+bckground-size: 100% 40%
+
+```{r xarextra, echo=FALSE, message=FALSE}
+
+xaringanExtra::use_fit_screen()
+xaringanExtra::use_tile_view()
+xaringanExtra::use_panelset()
+library(tidyverse)
+library(here)
+library(knitr)
+library(vegan)
+```
+
+# Ejemplos de análisis etnobotánicos
+
+
+### Dr. Leonardo Beltrán Rodríguez
+
+Jardín Botánico, Instituto de Biología-UNAM
+
+
+### M. en C. Gonzalo Martínez Herrera
+
+Graduate Center, CUNY 
+
+---
+
+layout: true
+background-image: url("hex_v.png") 
+background-position: 145%
+
+---
+<br>
+
+###.RUred[Introducción]
+
+.pull-left[
+* ¿Por qué R?
+
+* ¿R o Rstudio?
+]
+
+.pull-right[
+<img src="https://i.ytimg.com/vi/YNEov7xH_A8/hqdefault.jpg"/>
+]
+
+---
+<br>
+
+### .Rured[Elementos básicos]
+
+Lenguaje basado en objetos 
+
+```{r, }
+
+a <- seq(1,10,2) # Llámesele a "a" un...
+
+```
+
+<br>
+
+Vectores
+
+```{r}
+v_num <- c(1,2,3,4,5) # Vector numérico
+
+v_car <- c("a", "b","c", "d") # Vector de caracteres
+
+v_log <- c(TRUE, FALSE, FALSE, TRUE) # Vector lógico
+
+```
+---
+<br>
+
+.panelset[
+
+.panel[.panel-name[Data frames]
+
+```{r, include=TRUE}
+
+starwars %>%  # Este símbolo se lee como "entonces..."
+  select(1:4) %>% # Sirve para concatenar las funciones
+  head()
+
+```
+]
+
+.panel[.panel-name[Matrices]
+
+```{r}
+
+starwars %>% 
+  select(1:4) %>% 
+  head() -> d_star
+
+as.matrix(d_star)
+
+```
+]
+
+]
+---
+<br>
+
+.right[###Listas]
+
+```{r,include=TRUE}
+
+starwars$films[1]
+
+```
+
+.bottm[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Matryoshka_transparent.png/1200px-Matryoshka_transparent.png", width=40%>]
+
+---
+<br>
+
+###Selección de variables
+
+.panelset[
+
+.panel[.panel-name[Base de R]
+
+```{r}
+
+starwars$homeworld
+
+```
+]
+
+.panel[.panel-name[Tidyverse select]
+ 
+```{r}
+head(select(starwars, name, sex, homeworld))
+
+```
+]
+
+.panel[.panel-name[Tidyverse pipe]
+
+El operador %>% se lee como: *y después haz*
+
+```{r}
+starwars %>% #<<
+  select(name, sex, homeworld) %>% 
+  head()
+
+```
+]
+
+]
+---
+<br>
+
+### Selección de filas
+
+.panelset[
+
+.panel[.panel-name[Base de R]
+
+```{r}
+starwars[c(1:4),c(1:3)]
+```
+]
+
+.panel[.panel-name[Filter]
+
+```{r, include=TRUE}
+
+starwars %>%  
+  select(1:5) %>% 
+  filter(skin_color == "white") %>% 
+  head()
+
+```
+]
+
+.panel[.panel-name[slice]
+
+```{r}
+starwars %>% 
+  select(1:5) %>% 
+  slice(1:3)
+```
+]
+
+]
+
+---
+### Resumen
+
+Summary: Da un resumen de los elementos que conforman el data frame.
+
+Muy útil en análisis y modelos.
+
+<br>
+
+```{r}
+
+summary(iris)
+```
+---
+<br>
+
+Summarise (resumir)
+
+.center[
+<img src="https://imperialtalker.files.wordpress.com/2015/10/yoda-chewie-tarfful.jpeg" width="70%"/>]
+
+---
+
+<br>
+```{r, include=TRUE}
+
+starwars %>% 
+  group_by(species) %>% #<<
+  summarise(mean(height))
+  
+```
+
+---
+layout: false
+
+class: middle center
+
+#Estadística descriptica y univariada
+
+---
+layout: true
+background-image: url("hex_v.png") 
+background-position: 145%
+---
+<br>
+
+### Histograma
+
+.pull-left[
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+
+ggplot(starwars, aes(x = birth_year)) +
+  geom_histogram() +
+  xlab("Años") +
+  ylab("Conteos")
+  
+```
+]
+
+.pull-right[
+```{r, warning=FALSE, fig.show='hide', message=FALSE}
+
+ggplot(starwars, 
+       aes(x = birth_year)) + 
+  geom_histogram() +
+  xlab("Años") +
+  ylab("Conteos")
+  
+```
+]
+
+---
+
+<br>
+
+### Caja y bigote
+
+.pull-left[
+```{r, fig.show= 'hide', warning=FALSE, message=FALSE}
+
+his_star <- filter(starwars,
+                   species %in% c("Human", "Gungan", "Wookiee", "Hutt")) 
+
+ggplot(his_star, 
+       aes(x = species, y = height)) +
+  geom_boxplot() 
+
+```
+]
+
+.pull-right[
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+
+his_star <- filter(starwars, 
+                   species %in% c("Human", "Gungan", "Wookiee", "Hutt")) 
+
+ggplot(his_star, aes(x = species, y = height)) +
+  geom_boxplot() +
+  xlab("Especie") +
+  ylab("Altura")
+
+```
+]
+
+---
+<br>
+
+### Prueba de *t*
+
+.pull-left[
+<img src="http://www.wildgingerfarm.com/_Media/iris-setosa-ssp-canadensis.jpeg"/>
+]
+
+.pull-right[
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Iris_versicolor_2.jpg"/>
+]
+
+???
+
+En dos comunidades nos dicen estas plantas se usan como ornamento y que son la misma especie.
+---
+<br>
+
+### Hipótesis
+
+*Las personas engloban a distintas especies como una sola con base en su función* 
+
+<br>
+
+Estadística:
+
+H<sub>0</sub>: Los individuos son de la misma especie
+
+H<sub>A</sub>: Los individuos son de especies distintas.
+
+???
+
+Supuesto: El pétalo es una variable informativa.
+---
+
+<br>
+
+```{r, echo=FALSE}
+iris %>% 
+  filter(Species =="setosa") %>% 
+  select(Petal.Length) -> mues_a
+
+iris %>% 
+  filter(Species =="versicolor") %>% 
+  select(Petal.Length) -> mues_b
+
+```
+
+<br>
+
+.pull-left[
+```{r, echo=TRUE, include=TRUE}
+
+summary(mues_a)
+
+
+summary(mues_b)
+
+```
+]
+
+.pull-right[
+```{r, fig.height=4}
+qqnorm(pull(mues_a)) #<< pull sirve para *vectorizar*
+qqline(y = pull(mues_a))
+
+```
+
+```{r, echo=FALSE, fig.height=4}
+qqnorm(pull(mues_b)) #<<
+qqline(y = pull(mues_b))
+
+```
+]
+---
+class: middle
+
+<br>
+
+```{r}
+t.test(mues_a, mues_b)
+```
+
+¿Qué podemos concluir?
+
+---
+name: Wilcoxon
+
+### Prueba de Wilcoxon
+
+Hipótesis:
+
+Número de usos para una especie de planta
+
+```{r}
+
+loc_k <- rpois(n = 20, lambda = 6)
+
+summary(loc_k)
+
+loc_p <- rpois(n = 20, lambda = 4)
+
+summary(loc_p)
+```
+---
+name: Wilcoxon 2
+
+<br>
+```{r}
+
+loc_ran <- c(loc_k, loc_p) # Une todos los valores
+
+loc_orden <- rank(loc_ran) # Ordena
+
+ran_k <-  rep("loc_k", times = 20)
+
+ran_p <-  rep("loc_p", times = 20)
+
+loc_eti <- c(ran_k,ran_p) # Vector de ls etiquetas de localidad
+```
+
+
+```{r}
+
+loc_orden
+
+loc_eti
+
+tapply(loc_ran, loc_eti, sum)
+```
+
+---
+name: Wilcoxon 3
+
+<br>
+
+Decisión y conclusiones
+
+Si la suma de menor magnitud  de los rangos es menor al valor crítico entonces se rechaza H0
+
+```{r Wilcox_test, include=TRUE, warning=FALSE}
+wilcox.test(loc_k, loc_p)
+```
+
+
+<br>
+
+.center[El conocimiento de los usos de las plantas difiere entre comunidades]
+
+---
+layout: false
+name: ANOVA
+background-image: url("https://upload.wikimedia.org/wikipedia/commons/9/93/Leucaena_leucocephala_pods.jpg")
+background-size: cover
+class:bottom
+
+# .white[Anova]
+---
+layout: true
+background-image: url("hex_v.png") 
+background-position: 145%
+---
+<br>
+
+Casas y Caballero (1996) Manejo tradicional y variación morfológica de *Leucaena esculenta* en la región Mixteca
+
+
+```{r echo=FALSE, message=TRUE, warning=FALSE}
+d_leu <- readxl::read_xlsx(path = here("Base_datos", "leu_base.xlsx"),
+                           trim_ws = T)
+
+d_leu %>% 
+  select(1:5) %>% 
+  sample_n(size = 10) %>% 
+  kable(format ="html") %>% 
+  kableExtra::kable_styling(font_size = 15)
+```
+
+---
+name: ANOVA analisis
+<br>
+
+.panelset[
+
+.panel[.panel-name[Manejo de los datos]
+
+```{r}
+d_leu %>% 
+  mutate(vai_tam = `Ancho máximo de la vaina` * `Longitud máxima de la vaina`,
+         sem_tam = `Ancho máximo de la semilla` * `Grosor máximo de las semilla`) %>% 
+  transmute(Obs, Manejo, vai_tam, sem_tam) -> anova_leu
+
+anova_leu
+```
+]
+
+.panel[.panel-name[Tamaño de la vaina]
+
+```{r}
+aov_vai <- aov(formula = vai_tam ~ Manejo, data = anova_leu)
+
+summary(aov_vai)
+```
+]
+
+.panel[.panel-name[Tamaño de la semilla]
+
+```{r}
+aov_sem <- aov(formula = sem_tam ~ Manejo, data = anova_leu)
+
+summary(aov_sem)
+```
+]
+
+]
+---
+<br>
+
+###¿Será?
+
+.center[
+<img src="pca_leu.png"/>
+]
+---
+layout: false
+class: center
+background-image: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4e2be418-8ba5-4359-a0e0-af8727653a53/d978tkg-a41888ae-b441-45c8-82d6-6d508b78542b.jpg/v1/fill/w_1600,h_900,q_75,strp/homero_3d_by_gerardodesign-d978tkg.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwic3ViIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl0sIm9iaiI6W1t7InBhdGgiOiIvZi80ZTJiZTQxOC04YmE1LTQzNTktYTBlMC1hZjg3Mjc2NTNhNTMvZDk3OHRrZy1hNDE4ODhhZS1iNDQxLTQ1YzgtODJkNi02ZDUwOGI3ODU0MmIuanBnIiwid2lkdGgiOiI8PTE2MDAiLCJoZWlnaHQiOiI8PTkwMCJ9XV19.5-lj1B6S0fqVX8Q7pdODY_cBHI8qdCXb-A8LpyPXfQ8")
+
+bacground-size: cover
+
+# Estadística multivariada
+---
+background-image: url("https://www.lekue.com/wp/es/wp-content/uploads/sites/3/2018/05/amaranto.jpg")
+background-size: cover
+class: right
+
+###Análisis de componentes principales
+
+---
+layout: true
+background-image: url("hex_v.png") 
+background-position: 145%
+---
+###Mapes (1996): Variación morfológica en especies de amaranto
+
+```{r dat_amaranto, echo=FALSE, include=TRUE}
+
+c1 <- tibble("Número de caracter" = seq(1:18),
+       Caracter = c("Peso seco total de la planta",
+                    "Área foliar total de la planta", 
+                    "Peso seco de la raíz",
+                    "Peso seco del tallo",
+                    "Peso seco de la hoja",
+                    "Peso seco de la inflorescencia",
+                    "Porcentaje de biomasa de la raíz",
+                    "Porcentaje de biomasa del tallo",
+                    "Porcentaje de biomasa de la hoja",
+                    "Porcentaje de biomasa de la inflorescencia",
+                    "Longitud foliar",
+                    "Ancho foliar",
+                    "Área foliar",
+                    "Peso seco promedio de la hoja",
+                    "Longitud del peciolo",
+                    "Distancia de la base a la parte más ancha de la lámina",
+                    "Tasa de crecimiento absoluta promedio",
+                    "Tasa de crecimiento máxima relativa"),
+       Unidades = c("g", "m^2^",
+                    "g", "g", "g", "g", 
+                    "%", "%","%","%",
+                    "cm","cm","cm^2^",
+                    "g","cm","cm", "NA","NA")) 
+
+kable(x = c1, format = "html", 
+      align = c("c", "l", "c")) %>% 
+  kableExtra::kable_styling(font_size = 10) %>% 
+  kableExtra::kable_minimal()
+
+```
+
+.center[
+<img src="https://www.ecestaticos.com/imagestatic/clipping/922/9c9/9229c961ebfc8c2fbaec4129ebeb4ef6/el-amaranto-que-devora-transgenicos-un-bulo-ecologista-con-poca-base-cientifica.jpg?mtime=1443047442" width="50%"/>]
+---
+<br>
+
+```{r Amarando, echo=FALSE}
+d_ama <- readxl::read_xlsx(path = here("Base_datos", "amarantoBDM.xlsx"),
+                           trim_ws = T)
+
+# La estandarización se realiza con la función scale.
+
+std_ama <- scale(d_ama[-1], center = TRUE, scale = TRUE) 
+```
+
+.panelset[
+.panel[.panel-name[Datos "crudos"]
+```{r, echo=FALSE}
+d_ama %>% 
+  select(1:3) %>% 
+  slice(1:10)
+```
+]
+
+.panel[.panel-name[Datos estandarizados]
+
+¿Qué cambió?
+
+```{r, echo=FALSE}
+std_ama[1:10,1:2]
+```
+]
+]
+
+---
+<br>
+
+###Análisis
+
+```{r PCA ana_1, message=FALSE, warning=FALSE}
+pca_ama <- vegan::rda(std_ama, scale = T)
+
+pca_ama
+
+```
+
+<br>
+
+La inercia es otra forma de llamarle a la varianza .
+---
+<br>
+
+¿Qué nos dicen los eigenvalores?
+
+
+```{r PCA ana_2, echo=FALSE}
+tibble("Componente principal" = c("CP1","CP2","CP3"),
+                   Eigenvalores = c(6.8, 5.3, 2.1),
+                   "Varianza explicada (%)" = c(0.37, 0.29, 0.12)) %>% 
+  kable(format = "html") %>% 
+  kableExtra::kable_styling(font_size = 18) %>% 
+  kableExtra::kable_minimal()
+```
+
+---
+<br>
+
+<br>
+
+```{r scores_rda, echo=FALSE}
+
+sco_ama1 <- scores(pca_ama, scaling = 1, display = "sites") 
+```
+
+
+```{r res_pca, echo=FALSE}
+
+g_ama <- tibble(vari = as.character(x= seq(1:14)),
+                Uso = c(rep("Vegetal", times = 7), # Uso alimenticio de las plantas
+                        rep("Grano", times = 4), 
+                        rep("Vegetal", times = 3)),
+                Manejo = c(rep("Semicultivado", times = 7), # Regimen de manejo
+                           rep("Cultivado", times = 4),
+                           "Semicultivado", "Agreste", "Ruderal"),
+                pc1_1 = sco_ama1[,1], # Cargas o coordenadas en el componente 1
+                pc2_1 = sco_ama1[,2]) 
+
+kable(g_ama, format = "html") %>% 
+  kableExtra::kable_styling(font_size = 10) %>% 
+  kableExtra::kable_minimal()
+```
+
+---
+class: center
+
+<br>
+
+```{r, echo=FALSE}
+
+library(wesanderson)
+
+pal <- wesanderson::wes_palette(name = "Darjeeling1", n = 5, type = "discrete")
+pal2 <- wesanderson::wes_palette(name = "BottleRocket2", n = 5, type = "discrete")
+
+
+ggplot(data = g_ama) +
+  geom_point(aes(x = pc1_1, y = pc2_1, 
+                 fill = Uso, colour = Uso,
+                 shape = Manejo)) +
+  geom_text(aes(x = pc1_1, y = pc2_1, label = vari), 
+            nudge_x = -0.04, nudge_y = -0.055) +
+  xlab("CP 1 (37.8 %)") +
+  ylab("CP 2 (29.4 %)") +
+  scale_fill_manual(aesthetics = c("fill", "colour"), 
+                    breaks = c("Vegetal", "Grano"),
+                    values = pal[2:4]) +
+  scale_shape_manual(values = c(21:24)) +
+  theme_minimal(base_family = "Cantarell") 
+```
+
+---
+background-image: url("peña.jpg")
+background-size: cover
+class: right
+
+## .grey[Análisis de correspondencias]
+
+---
+<br>
+
+Importe y manejo de datos
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+
+d_sit <- readr::read_csv(file = here("Presentaciones/Bases_datos/sitios_binarios.csv"),
+                  col_names = TRUE) 
+
+d_sit %>%
+  transmute(sitio = X1,  # Filtr? las variables ecol?gicas
+            altitude = msnm,
+            basal_area = `area basal`,
+            slope = pendiente, 
+            orientation = orientacion) ->  d_site
+
+d_sit %>%
+  mutate(`area basal` = NULL,
+         msnm = NULL,
+         pendiente = NULL,
+         orientacion = NULL) %>%
+  rename(sites = X1) -> d_ca # Datos de presencia - ausencia
+
+# Suma de la presencia de las especies para descartar las especies raras 
+# antes de meterlas al an?lisis.
+
+d_ca[,-1] %>%
+  summarise_all(sum) %>%
+  t() -> sum_ca 
+
+d_ca %>%
+  mutate(Agla = NULL, Plau = NULL, Erpr = NULL, Poly = NULL, Phic = NULL, Pips = NULL,
+         Ruca = NULL, Ceca = NULL, Quer = NULL, Pipa = NULL) -> d_ca
+
+head(d_ca)
+```
+---
+###Análisis de correspondencias canónico
+
+```{r}
+m_env <- scale(d_site[,-1], scale = T) 
+cca_sit <- cca(formula = d_ca[,-1] ~ m_env) #<<
+summary(cca_sit)        
+
+```
+
+???
+
+El análisis de correspondencias canónicas permite que la ordenación de los sitios está  constreñida a la relación lineal con la matriz de las variables ambientales. Dicho de otro modo, la ordenación que vemos está considerando las especies y las propiedades del sitio al mismo tiempo.
+
+Estandarización de la matriz de variables ambientales para que la matriz sea dimensionalmente homogénea (que las unidades están en las mismas unidades) 
+---
+```{r, echo=FALSE}
+# Coordenadas de los sitios, especies, y de las variables ambientales
+
+ccor_sit <- as_tibble(scores(x = cca_sit, choices = 1:2, display = "lc"))
+ccor_spe <- as.data.frame(scores(x = cca_sit, choices = 1:2, display = "species"))
+ccor_env <- as_tibble(scores(x = cca_sit, choices = 1:2, display = "bp"))
+
+rown <- c("site 1", "site 2","site 3", "site 4", "site 5", "site 6", "site 7", "site 8",
+          "site 9", "site 10", "site 11", "site 12")
+
+# A?ad? los nombres de las filas
+ccor_sit %>%
+  mutate(sites = rown) %>% 
+  column_to_rownames(var = "sites") -> ccor_sit
+
+ccor_env %>%
+  mutate(vars = c("altitude", "basal area", "slope","orientation")) %>%
+  column_to_rownames(var = "vars") -> ccor_env
+```
+
+.pull-left[
+```{r, include=TRUE}
+ccor_sit
+```
+]
+
+.pull-right[
+```{r, include=TRUE}
+ccor_spe
+```
+]
+
+---
+class: center
+
+<br>
+
+```{r, include=TRUE}
+ccor_env
+```
+---
+class: center
+
+```{r CCA graf, echo=FALSE}
+
+colores <- wes_palette("Darjeeling1")
+
+# Primera gr?fica con los puntos de los sitios.
+g_sites <- ggplot(data = ccor_sit, aes(x = CCA1, y = CCA2)) + # Establece los ejes
+  geom_point(shape = 19, colour = alpha(colour = colores[3], alpha = 0.6), # agrega los puntos
+             size = 3) +
+  geom_text(aes(label = rownames(ccor_sit)), hjust = -0.5, vjust = 0) + #a?ade las etiquetas
+  geom_hline(yintercept = 0, linetype = 2, colour = alpha("black", alpha = 0.3)) +
+  geom_vline(xintercept = 0, linetype = 2, colour = alpha("black", alpha = 0.3)) +
+  theme_light()  # definen los l?mites y las muescas de los ejes
+
+# Esta secci?n a?ade los puntos y l?neas de las especies.
+g_spe <- g_sites + 
+  geom_point(data = ccor_spe, aes(x = CCA1, y = CCA2), shape = 17, size = 2, 
+             colour = alpha(colour = colores[1], alpha = 0.6)) +
+  geom_segment(data = ccor_spe, aes(x = 0, y = 0, xend = CCA1, yend = CCA2),
+               linetype = 2, colour = alpha (colour = "black", alpha = 0.5)) +
+  geom_text(data = ccor_spe, aes(label = rownames(ccor_spe)), hjust = 0.8, vjust = -0.8) 
+  
+# Finalmente agregu? los puntos y l?neas de las variables ambientales.
+g_spe +
+  geom_segment(data = ccor_env, aes(x = 0, y = 0, xend = CCA1, yend = CCA2),
+               arrow = arrow(ends = "last", type = "open", length = unit(0.2, "centimeters")),
+               colour = alpha (colour = colores[2], alpha = 0.5), size = 1) +
+  geom_text(data = ccor_env, aes(label = rownames(ccor_env)), hjust = 0.8, vjust = 1.5)
+
+```
+
+---
+background-image: url("https://elblogdecricri.files.wordpress.com/2013/04/919-pasarela_milan_1_large.jpg")
+background-size: cover
+class: bottom
+
+---
+background-image: url("CXL_vista.JPG")
+background-size: cover
+
+### Percepción al cambio climático
+
+```{r Análisis: Modelo logístico cambio ~ percepción, echo=FALSE, include=FALSE}
+
+# Objetivo: Este análisis se hizo para poder probar si la percepción de cada persona
+# puede explicar influir sobre la probabilidad de realizar un cambio en el manejo
+# de las milpas.
+
+# Esta matriz se construyó usando la herramienta "tabla de coocurencia de cógidos y
+#  DP's" de Atlas.ti y de la entrevista de SG13 que no fue grabada.
+
+# Para determinar si hubo cambio se marcó como positivo (1) si al menos hubo una cita
+# en los códigos: 
+
+# Riego
+# Uso de pesticidas
+# Cambio en la fecha de siembra
+# Diversificación de cultivos. 
+
+d_cambio <- read_csv(file = here("Base_datos/cambio_manejo.csv"))
+
+d_cambio %>%
+  select(-c(X7, X8, X9, X10,X11, "<")) -> d_cambio 
+
+d_cambio <- d_cambio[1:34,] 
+d_cambio <- as_tibble(d_cambio)
+```
+
+---
+<br>
+
+###Manejo de los datos
+
+```{r, echo=FALSE}
+# Proporción entre quienes realizaron cambios.
+
+# Extracción y renombre de las variables de percepción.
+
+col_cla <- c("f", "f", "n", "f", "f", "f", 
+             "f", "f", "n", "f", "n", "n", 
+             "n", "f", "n", "n", "n", "n", 
+             "n", "n", "n", "n", "n", "n", "n", "n", 
+             "n", "n", "n", "n", "n", "n", "n")
+
+
+d_glm <- read_csv(file = here("Base_datos/PCO.csv"))
+                  
+d_glm$edad <- as.numeric(d_glm$edad)
+
+
+d_glm %>%
+  select(ID, dif.pre, dif.t, dif.f, dif.h, sie.clim.mes, 
+         sie.clim.dif, pre.tem, pre.tem.dif, tem.mes.dif, 
+         per.vie.dif, per.pla.dif) %>% 
+  rename(dif_pre = dif.pre,
+         dif_t = dif.t,
+         dif_f = dif.f,
+         dif_h = dif.h,
+         sie_clim_mes = sie.clim.mes,
+         sie_clim_dif = sie.clim.dif, 
+         pre_tem = pre.tem, 
+         pre_tem_dif = pre.tem.dif, 
+         tem_mes_dif = tem.mes.dif, 
+         per_vie_dif = per.vie.dif,
+         per_pla_dif = per.pla.dif) -> d_glm
+
+
+# En esta nueva versión (06/06/19) quité la longitud de la temporada de lluvia porque
+# seguramente está influyendo demasiado en el índice de percepción.
+
+# Actualización junio 2020: Esta variable es la percepción de los cambios en la 
+# temporada de lluvia hecha binaria.
+
+pre_tdif <- c(0,0,0,1,0,0,0,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,NA,1,0,1,1,1,1)
+
+d_glm %>%
+  select(ID,
+         sie_clim_mes, 
+         sie_clim_dif,
+         tem_mes_dif, 
+         per_vie_dif, 
+         per_pla_dif) %>% 
+  add_column(pre_tdif) -> d_per
+
+d_per
+```
+---
+
+<br>
+
+### Manejo de los datos
+  
+```{r, echo=FALSE}
+
+# Con base en "Babbie, 2013" una de las formas de lidiar con los datos ausentes es 
+# tomar los NA's como si fuesen respuestas negativas. En mi caso los NA's se deben a 
+# que los campesinos dijeron no saber la respuesta o porque la pregunta no se realizó. 
+# Voy a crear dos índices. El primero tomaré los NA's como "0", y para el segundo 
+# usaré las proporciones como nuevos límites.
+
+
+# Caso 1: Variables de percepción completas ------------------------------------
+
+# Realicé el modelo de cambio en función de las variables de percepción de
+# forma separada.
+
+d_per %>% 
+  add_column(cambio = d_cambio$cambio) -> d_varcomp
+
+# Dado que el modelo no acepta NA's, los convertí a 0.
+
+for(i in 1:nrow(d_varcomp)) {
+  for(j in seq_along(d_varcomp)) {
+    if(is.na(d_varcomp[[i,j]])) {
+      d_varcomp[[i,j]] <-  0
+    } else {
+      d_varcomp[[i,j]]
+    }
+  }
+}
+
+```
+
+```{r,echo=FALSE}
+d_varcomp
+```
+
+---
+<br>
+
+### Ajuste del modelo
+
+La diferencia entre la devianza de los modelos sigue aproximadamente una distribución de X² por lo que es posible hacer una prueba para X² para probar la diferencias entre los modelos.
+
+```{r}
+
+m_varc <- glm(
+  formula = cambio ~ sie_clim_dif + per_vie_dif + pre_tdif + tem_mes_dif + per_pla_dif + sie_clim_mes,
+  family = binomial("logit"), data = d_varcomp)
+
+```
+---
+### Simplificación
+
+Eliminación de términos por pasos.
+
+```{r}
+
+m_varc2 <- update(m_varc, ~ . - sie_clim_mes)
+m_varc3 <- update(m_varc2, ~ . - per_pla_dif)
+m_varc4 <- update(m_varc2, ~ sie_clim_dif + per_vie_dif + tem_mes_dif + pre_tdif)
+m_varc5 <- update(m_varc4, ~ . - pre_tdif)
+m_varc6 <- update(m_varc5, ~ . - tem_mes_dif)
+m_varc7 <- update(m_varc6, ~ . - per_vie_dif)
+m_var_null <- glm(formula = cambio ~ 1, family = binomial("logit"), data = d_varcomp)
+
+```
+---
+
+
+Modelo mínimo en donde la percepción de cambios en el mes de siembra fue significativo.
+
+```{r}
+
+anova(m_varc7, test = "Chisq") # Compara con el modelo nulo.
+
+```
+
+De acuerdo con el modelo, el cambio en "log-odds" cuando la persona dijo haber percibido cambios en la fecha de
+siembra equivale a 1.8971.
+
+Este es el incremento en probabilidad: 0.87
+
+```{r}
+exp(1.8971)/(1 + exp(1.8971))
+
+```
+
+
+---
+### Prueba del modelo
+
+Los resultados de la prueba de Hosmer-Lemenshow muestran (p = 1) indican que no hay evidencia de que el modelo tenga un ajuste mediocre a los datos. Sin embargo, como la muestra es pequeña es posible que simplemente la prueba no tenga suficiente poder para detectar errores de especificación del modelo.
+
+```{r}
+ResourceSelection::hoslem.test(x = m_varc7$y, y = fitted(m_varc7))
+
+```
+
+---

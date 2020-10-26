@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Etnobotánica práctica</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Gonzalo Martínez" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rutgers.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra_fit-screen-0.2.4/fit-screen.js"></script>
+    <link href="libs/tile-view-0.2.4/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.4/tile-view.js"></script>
+    <link href="libs/panelset-0.2.4/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.4/panelset.js"></script>
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="rutgers-fonts_small.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: right, middle
+background-image: url("hex.png")
+background-position: center top
+bckground-size: 100% 40%
+
+
+
+# Ejemplos de análisis etnobotánicos
+
+
+### Dr. Leonardo Beltrán Rodríguez
+
+Jardín Botánico, Instituto de Biología-UNAM
+
+
+### M. en C. Gonzalo Martínez Herrera
+
+Graduate Center, CUNY 
+
+---
+
+layout: true
+background-image: url("hex_v.png") 
+background-position: 145%
+
+---
+&lt;br&gt;
+
+###.RUred[Introducción]
+
+.pull-left[
+* ¿Por qué R?
+
+* ¿R o Rstudio?
+]
+
+.pull-right[
+&lt;img src="https://i.ytimg.com/vi/YNEov7xH_A8/hqdefault.jpg"/&gt;
+]
+
+---
+&lt;br&gt;
+
+### .Rured[Elementos básicos]
+
+Lenguaje basado en objetos 
+
+
+```r
+a &lt;- seq(1,10,2) # Llámesele a "a" un...
+```
+
+&lt;br&gt;
+
+Vectores
+
+
+```r
+v_num &lt;- c(1,2,3,4,5) # Vector numérico
+
+v_car &lt;- c("a", "b","c", "d") # Vector de caracteres
+
+v_log &lt;- c(TRUE, FALSE, FALSE, TRUE) # Vector lógico
+```
+---
+&lt;br&gt;
+
+.panelset[
+
+.panel[.panel-name[Data frames]
+
+
+```r
+starwars %&gt;%  # Este símbolo se lee como "entonces..."
+  select(1:4) %&gt;% # Sirve para concatenar las funciones
+  head()
+```
+
+```
+## # A tibble: 6 x 4
+##   name           height  mass hair_color 
+##   &lt;chr&gt;           &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      
+## 1 Luke Skywalker    172    77 blond      
+## 2 C-3PO             167    75 &lt;NA&gt;       
+## 3 R2-D2              96    32 &lt;NA&gt;       
+## 4 Darth Vader       202   136 none       
+## 5 Leia Organa       150    49 brown      
+## 6 Owen Lars         178   120 brown, grey
+```
+]
+
+.panel[.panel-name[Matrices]
+
+
+```r
+starwars %&gt;% 
+  select(1:4) %&gt;% 
+  head() -&gt; d_star
+
+as.matrix(d_star)
+```
+
+```
+##      name             height mass  hair_color   
+## [1,] "Luke Skywalker" "172"  " 77" "blond"      
+## [2,] "C-3PO"          "167"  " 75" NA           
+## [3,] "R2-D2"          " 96"  " 32" NA           
+## [4,] "Darth Vader"    "202"  "136" "none"       
+## [5,] "Leia Organa"    "150"  " 49" "brown"      
+## [6,] "Owen Lars"      "178"  "120" "brown, grey"
+```
+]
+
+]
+---
+&lt;br&gt;
+
+.right[###Listas]
+
+
+```r
+starwars$films[1]
+```
+
+```
+## [[1]]
+## [1] "The Empire Strikes Back" "Revenge of the Sith"    
+## [3] "Return of the Jedi"      "A New Hope"             
+## [5] "The Force Awakens"
+```
+
+.bottm[&lt;img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Matryoshka_transparent.png/1200px-Matryoshka_transparent.png", width=40%&gt;]
+
+---
+&lt;br&gt;
+
+###Selección de variables
+
+.panelset[
+
+.panel[.panel-name[Base de R]
+
+
+```r
+starwars$homeworld
+```
+
+```
+##  [1] "Tatooine"       "Tatooine"       "Naboo"          "Tatooine"      
+##  [5] "Alderaan"       "Tatooine"       "Tatooine"       "Tatooine"      
+##  [9] "Tatooine"       "Stewjon"        "Tatooine"       "Eriadu"        
+## [13] "Kashyyyk"       "Corellia"       "Rodia"          "Nal Hutta"     
+## [17] "Corellia"       "Bestine IV"     NA               "Naboo"         
+## [21] "Kamino"         NA               "Trandosha"      "Socorro"       
+## [25] "Bespin"         "Mon Cala"       "Chandrila"      NA              
+## [29] "Endor"          "Sullust"        NA               "Cato Neimoidia"
+## [33] "Coruscant"      "Naboo"          "Naboo"          "Naboo"         
+## [37] "Naboo"          "Toydaria"       "Malastare"      "Naboo"         
+## [41] "Tatooine"       "Dathomir"       "Ryloth"         "Ryloth"        
+## [45] "Vulpter"        "Troiken"        "Tund"           "Haruun Kal"    
+## [49] "Cerea"          "Glee Anselm"    "Iridonia"       "Coruscant"     
+## [53] "Iktotch"        "Quermia"        "Dorin"          "Champala"      
+## [57] "Naboo"          "Naboo"          "Tatooine"       "Geonosis"      
+## [61] "Mirial"         "Mirial"         "Naboo"          "Serenno"       
+## [65] "Alderaan"       "Concord Dawn"   "Zolan"          "Ojom"          
+## [69] "Kamino"         "Kamino"         "Coruscant"      "Aleen Minor"   
+## [73] NA               "Skako"          "Muunilinst"     "Shili"         
+## [77] "Kalee"          "Kashyyyk"       "Alderaan"       "Umbara"        
+## [81] "Utapau"         NA               NA               NA              
+## [85] NA               NA               "Naboo"
+```
+]
+
+.panel[.panel-name[Tidyverse select]
+ 
+
+```r
+head(select(starwars, name, sex, homeworld))
+```
+
+```
+## # A tibble: 6 x 3
+##   name           sex    homeworld
+##   &lt;chr&gt;          &lt;chr&gt;  &lt;chr&gt;    
+## 1 Luke Skywalker male   Tatooine 
+## 2 C-3PO          none   Tatooine 
+## 3 R2-D2          none   Naboo    
+## 4 Darth Vader    male   Tatooine 
+## 5 Leia Organa    female Alderaan 
+## 6 Owen Lars      male   Tatooine
+```
+]
+
+.panel[.panel-name[Tidyverse pipe]
+
+El operador %&gt;% se lee como: *y después haz*
+
+
+```r
+*starwars %&gt;%
+  select(name, sex, homeworld) %&gt;% 
+  head()
+```
+
+```
+## # A tibble: 6 x 3
+##   name           sex    homeworld
+##   &lt;chr&gt;          &lt;chr&gt;  &lt;chr&gt;    
+## 1 Luke Skywalker male   Tatooine 
+## 2 C-3PO          none   Tatooine 
+## 3 R2-D2          none   Naboo    
+## 4 Darth Vader    male   Tatooine 
+## 5 Leia Organa    female Alderaan 
+## 6 Owen Lars      male   Tatooine
+```
+]
+
+]
+---
+&lt;br&gt;
+
+### Selección de filas
+
+.panelset[
+
+.panel[.panel-name[Base de R]
+
+
+```r
+starwars[c(1:4),c(1:3)]
+```
+
+```
+## # A tibble: 4 x 3
+##   name           height  mass
+##   &lt;chr&gt;           &lt;int&gt; &lt;dbl&gt;
+## 1 Luke Skywalker    172    77
+## 2 C-3PO             167    75
+## 3 R2-D2              96    32
+## 4 Darth Vader       202   136
+```
+]
+
+.panel[.panel-name[Filter]
+
+
+```r
+starwars %&gt;%  
+  select(1:5) %&gt;% 
+  filter(skin_color == "white") %&gt;% 
+  head()
+```
+
+```
+## # A tibble: 2 x 5
+##   name        height  mass hair_color skin_color
+##   &lt;chr&gt;        &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;     
+## 1 Darth Vader    202   136 none       white     
+## 2 Yarael Poof    264    NA none       white
+```
+]
+
+.panel[.panel-name[slice]
+
+
+```r
+starwars %&gt;% 
+  select(1:5) %&gt;% 
+  slice(1:3)
+```
+
+```
+## # A tibble: 3 x 5
+##   name           height  mass hair_color skin_color 
+##   &lt;chr&gt;           &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      
+## 1 Luke Skywalker    172    77 blond      fair       
+## 2 C-3PO             167    75 &lt;NA&gt;       gold       
+## 3 R2-D2              96    32 &lt;NA&gt;       white, blue
+```
+]
+
+]
+
+---
+### Resumen
+
+Summary: Da un resumen de los elementos que conforman el data frame.
+
+Muy útil en análisis y modelos.
+
+&lt;br&gt;
+
+
+```r
+summary(iris)
+```
+
+```
+##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species  
+##  setosa    :50  
+##  versicolor:50  
+##  virginica :50  
+##                 
+##                 
+## 
+```
+---
+&lt;br&gt;
+
+Summarise (resumir)
+
+.center[
+&lt;img src="https://imperialtalker.files.wordpress.com/2015/10/yoda-chewie-tarfful.jpeg" width="70%"/&gt;]
+
+---
+
+&lt;br&gt;
+
+```r
+starwars %&gt;% 
+* group_by(species) %&gt;%
+  summarise(mean(height))
+```
+
+```
+## `summarise()` ungrouping output (override with `.groups` argument)
+```
+
+```
+## # A tibble: 38 x 2
+##    species   `mean(height)`
+##    &lt;chr&gt;              &lt;dbl&gt;
+##  1 Aleena               79 
+##  2 Besalisk            198 
+##  3 Cerean              198 
+##  4 Chagrian            196 
+##  5 Clawdite            168 
+##  6 Droid                NA 
+##  7 Dug                 112 
+##  8 Ewok                 88 
+##  9 Geonosian           183 
+## 10 Gungan              209.
+## # … with 28 more rows
+```
+
+---
+layout: false
+
+class: middle center
+
+#Estadística descriptica y univariada
+
+---
+layout: true
+background-image: url("hex_v.png") 
+background-position: 145%
+---
+&lt;br&gt;
+
+### Histograma
+
+.pull-left[
+![](etno_practica_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+
+```r
+ggplot(starwars, 
+       aes(x = birth_year)) + 
+  geom_histogram() +
+  xlab("Años") +
+  ylab("Conteos")
+```
+]
+
+---
+
+&lt;br&gt;
+
+### Caja y bigote
+
+.pull-left[
+
+```r
+his_star &lt;- filter(starwars,
+                   species %in% c("Human", "Gungan", "Wookiee", "Hutt")) 
+
+ggplot(his_star, 
+       aes(x = species, y = height)) +
+  geom_boxplot() 
+```
+]
+
+.pull-right[
+![](etno_practica_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+]
+
+---
+&lt;br&gt;
+
+### Prueba de *t*
+
+.pull-left[
+&lt;img src="http://www.wildgingerfarm.com/_Media/iris-setosa-ssp-canadensis.jpeg"/&gt;
+]
+
+.pull-right[
+&lt;img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Iris_versicolor_2.jpg"/&gt;
+]
+
+???
+
+En dos comunidades nos dicen estas plantas se usan como ornamento y que son la misma especie.
+---
+&lt;br&gt;
+
+### Hipótesis
+
+*Las personas engloban a distintas especies como una sola con base en su función* 
+
+&lt;br&gt;
+
+Estadística:
+
+H&lt;sub&gt;0&lt;/sub&gt;: Los individuos son de la misma especie
+
+H&lt;sub&gt;A&lt;/sub&gt;: Los individuos son de especies distintas.
+
+???
+
+Supuesto: El pétalo es una variable informativa.
+---
+
+&lt;br&gt;
+
+
+
+&lt;br&gt;
+
+.pull-left[
+
+```r
+summary(mues_a)
+```
+
+```
+##   Petal.Length  
+##  Min.   :1.000  
+##  1st Qu.:1.400  
+##  Median :1.500  
+##  Mean   :1.462  
+##  3rd Qu.:1.575  
+##  Max.   :1.900
+```
+
+```r
+summary(mues_b)
+```
+
+```
+##   Petal.Length 
+##  Min.   :3.00  
+##  1st Qu.:4.00  
+##  Median :4.35  
+##  Mean   :4.26  
+##  3rd Qu.:4.60  
+##  Max.   :5.10
+```
+]
+
+.pull-right[
+
+```r
+qqnorm(pull(mues_a)) #&lt;&lt; pull sirve para *vectorizar*
+qqline(y = pull(mues_a))
+```
+
+![](etno_practica_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+
+![](etno_practica_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+]
+---
+class: middle
+
+&lt;br&gt;
+
+
+```r
+t.test(mues_a, mues_b)
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  mues_a and mues_b
+## t = -39.493, df = 62.14, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -2.939618 -2.656382
+## sample estimates:
+## mean of x mean of y 
+##     1.462     4.260
+```
+
+¿Qué podemos concluir?
+
+---
+name: Wilcoxon
+
+### Prueba de Wilcoxon
+
+Hipótesis:
+
+Número de usos para una especie de planta
+
+
+```r
+loc_k &lt;- rpois(n = 20, lambda = 6)
+
+summary(loc_k)
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##       2       3       7       6       8      11
+```
+
+```r
+loc_p &lt;- rpois(n = 20, lambda = 4)
+
+summary(loc_p)
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    1.00    2.75    4.00    4.10    5.25    8.00
+```
+---
+name: Wilcoxon 2
+
+&lt;br&gt;
+
+```r
+loc_ran &lt;- c(loc_k, loc_p) # Une todos los valores
+
+loc_orden &lt;- rank(loc_ran) # Ordena
+
+ran_k &lt;-  rep("loc_k", times = 20)
+
+ran_p &lt;-  rep("loc_p", times = 20)
+
+loc_eti &lt;- c(ran_k,ran_p) # Vector de ls etiquetas de localidad
+```
+
+
+
+```r
+loc_orden
+```
+
+```
+##  [1] 11.0 29.5 35.5 35.5 29.5 29.5 24.5 39.0  5.0 11.0 24.5 29.5 17.0 35.5 11.0
+## [16] 35.5 35.5 40.0  5.0 11.0 11.0  1.5 17.0 11.0 21.0 29.5  1.5 17.0 11.0 17.0
+## [31] 29.5  5.0 21.0 24.5 21.0  5.0 35.5  5.0 24.5 17.0
+```
+
+```r
+loc_eti
+```
+
+```
+##  [1] "loc_k" "loc_k" "loc_k" "loc_k" "loc_k" "loc_k" "loc_k" "loc_k" "loc_k"
+## [10] "loc_k" "loc_k" "loc_k" "loc_k" "loc_k" "loc_k" "loc_k" "loc_k" "loc_k"
+## [19] "loc_k" "loc_k" "loc_p" "loc_p" "loc_p" "loc_p" "loc_p" "loc_p" "loc_p"
+## [28] "loc_p" "loc_p" "loc_p" "loc_p" "loc_p" "loc_p" "loc_p" "loc_p" "loc_p"
+## [37] "loc_p" "loc_p" "loc_p" "loc_p"
+```
+
+```r
+tapply(loc_ran, loc_eti, sum)
+```
+
+```
+## loc_k loc_p 
+##   120    82
+```
+
+---
+name: Wilcoxon 3
+
+&lt;br&gt;
+
+Decisión y conclusiones
+
+Si la suma de menor magnitud  de los rangos es menor al valor crítico entonces se rechaza H0
+
+
+```r
+wilcox.test(loc_k, loc_p)
+```
+
+```
+## 
+## 	Wilcoxon rank sum test with continuity correction
+## 
+## data:  loc_k and loc_p
+## W = 284.5, p-value = 0.02192
+## alternative hypothesis: true location shift is not equal to 0
+```
+
+
+&lt;br&gt;
+
+.center[El conocimiento de los usos de las plantas difiere entre comunidades]
+
+---
+layout: false
+name: ANOVA
+background-image: url("https://upload.wikimedia.org/wikipedia/commons/9/93/Leucaena_leucocephala_pods.jpg")
+background-size: cover
+class:bottom
+
+# .white[Anova]
+---
+layout: true
+background-image: url("hex_v.png") 
+background-position: 145%
+---
+&lt;br&gt;
+
+Casas y Caballero (1996) Manejo tradicional y variación morfológica de *Leucaena esculenta* en la región Mixteca
+
+
+&lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Obs &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Manejo &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Largo máximo de la semila &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Ancho máximo de la semilla &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Grosor máximo de las semilla &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; C3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cultivada &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.989 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.738 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.215 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; T2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tolerada &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.934 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.701 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.237 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; T13 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tolerada &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.863 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.663 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.182 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S15 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Silvestre &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.742 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.459 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.207 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Silvestre &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.823 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.543 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.264 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S17 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Silvestre &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.715 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.619 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.181 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; T15 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tolerada &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.894 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.695 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.185 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Silvestre &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.691 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.504 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.163 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; T12 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tolerada &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.882 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.848 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.203 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Silvestre &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.763 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.488 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.192 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+name: ANOVA analisis
+&lt;br&gt;
+
+.panelset[
+
+.panel[.panel-name[Manejo de los datos]
+
+
+```r
+d_leu %&gt;% 
+  mutate(vai_tam = `Ancho máximo de la vaina` * `Longitud máxima de la vaina`,
+         sem_tam = `Ancho máximo de la semilla` * `Grosor máximo de las semilla`) %&gt;% 
+  transmute(Obs, Manejo, vai_tam, sem_tam) -&gt; anova_leu
+
+anova_leu
+```
+
+```
+## # A tibble: 48 x 4
+##    Obs   Manejo   vai_tam sem_tam
+##    &lt;chr&gt; &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;
+##  1 T1    Tolerada    33.0   0.175
+##  2 T2    Tolerada    19.8   0.166
+##  3 T3    Tolerada    41.5   0.197
+##  4 T4    Tolerada    31.7   0.144
+##  5 T5    Tolerada    19.3   0.112
+##  6 T6    Tolerada    19.2   0.141
+##  7 T7    Tolerada    22.0   0.177
+##  8 T8    Tolerada    30.6   0.168
+##  9 T9    Tolerada    36.7   0.141
+## 10 T10   Tolerada    26.5   0.133
+## # … with 38 more rows
+```
+]
+
+.panel[.panel-name[Tamaño de la vaina]
+
+
+```r
+aov_vai &lt;- aov(formula = vai_tam ~ Manejo, data = anova_leu)
+
+summary(aov_vai)
+```
+
+```
+##             Df Sum Sq Mean Sq F value Pr(&gt;F)  
+## Manejo       2    605   302.4   3.327 0.0449 *
+## Residuals   45   4091    90.9                 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+]
+
+.panel[.panel-name[Tamaño de la semilla]
+
+
+```r
+aov_sem &lt;- aov(formula = sem_tam ~ Manejo, data = anova_leu)
+
+summary(aov_sem)
+```
+
+```
+##             Df  Sum Sq  Mean Sq F value Pr(&gt;F)  
+## Manejo       2 0.00705 0.003523   4.283 0.0198 *
+## Residuals   45 0.03701 0.000822                 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+]
+
+]
+---
+&lt;br&gt;
+
+###¿Será?
+
+.center[
+&lt;img src="pca_leu.png"/&gt;
+]
+---
+layout: false
+class: center
+background-image: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4e2be418-8ba5-4359-a0e0-af8727653a53/d978tkg-a41888ae-b441-45c8-82d6-6d508b78542b.jpg/v1/fill/w_1600,h_900,q_75,strp/homero_3d_by_gerardodesign-d978tkg.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwic3ViIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl0sIm9iaiI6W1t7InBhdGgiOiIvZi80ZTJiZTQxOC04YmE1LTQzNTktYTBlMC1hZjg3Mjc2NTNhNTMvZDk3OHRrZy1hNDE4ODhhZS1iNDQxLTQ1YzgtODJkNi02ZDUwOGI3ODU0MmIuanBnIiwid2lkdGgiOiI8PTE2MDAiLCJoZWlnaHQiOiI8PTkwMCJ9XV19.5-lj1B6S0fqVX8Q7pdODY_cBHI8qdCXb-A8LpyPXfQ8")
+
+bacground-size: cover
+
+# Estadística multivariada
+---
+background-image: url("https://www.lekue.com/wp/es/wp-content/uploads/sites/3/2018/05/amaranto.jpg")
+background-size: cover
+class: right
+
+###Análisis de componentes principales
+
+---
+layout: true
+background-image: url("hex_v.png") 
+background-position: 145%
+---
+###Mapes (1996): Variación morfológica en especies de amaranto
+
+&lt;table class="table lightable-minimal" style='font-size: 10px; margin-left: auto; margin-right: auto; font-family: "Trebuchet MS", verdana, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:center;"&gt; Número de caracter &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Caracter &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Unidades &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Peso seco total de la planta &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; g &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Área foliar total de la planta &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; m^2^ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Peso seco de la raíz &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; g &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Peso seco del tallo &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; g &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Peso seco de la hoja &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; g &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Peso seco de la inflorescencia &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; g &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Porcentaje de biomasa de la raíz &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; % &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Porcentaje de biomasa del tallo &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; % &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Porcentaje de biomasa de la hoja &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; % &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Porcentaje de biomasa de la inflorescencia &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; % &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Longitud foliar &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; cm &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Ancho foliar &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; cm &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Área foliar &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; cm^2^ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Peso seco promedio de la hoja &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; g &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Longitud del peciolo &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; cm &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Distancia de la base a la parte más ancha de la lámina &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; cm &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 17 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tasa de crecimiento absoluta promedio &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tasa de crecimiento máxima relativa &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+.center[
+&lt;img src="https://www.ecestaticos.com/imagestatic/clipping/922/9c9/9229c961ebfc8c2fbaec4129ebeb4ef6/el-amaranto-que-devora-transgenicos-un-bulo-ecologista-con-poca-base-cientifica.jpg?mtime=1443047442" width="50%"/&gt;]
+---
+&lt;br&gt;
+
+
+
+.panelset[
+.panel[.panel-name[Datos "crudos"]
+
+```
+## # A tibble: 10 x 3
+##    ind   `Peso seco total de la planta (gr.… `Área foliar total de la planta (m…
+##    &lt;chr&gt;                               &lt;dbl&gt;                               &lt;dbl&gt;
+##  1 1V                                   483.                               1.45 
+##  2 2V                                   549.                               2.91 
+##  3 3V                                   442.                               1.31 
+##  4 4V                                   647.                               1.26 
+##  5 5V                                   476.                               0.387
+##  6 6V                                   482.                               1.32 
+##  7 7V                                  1001.                               2.30 
+##  8 8G                                   804.                               0.912
+##  9 9G                                   335.                               0.649
+## 10 10G                                  311.                               0.452
+```
+]
+
+.panel[.panel-name[Datos estandarizados]
+
+¿Qué cambió?
+
+
+```
+##       Peso seco total de la planta (gr.) Área foliar total de la planta (m2)
+##  [1,]                         -0.1832320                           0.4094029
+##  [2,]                          0.1647725                           2.4279551
+##  [3,]                         -0.4027053                           0.2205083
+##  [4,]                          0.6803211                           0.1515687
+##  [5,]                         -0.2238791                          -1.0548747
+##  [6,]                         -0.1879241                           0.2370538
+##  [7,]                          2.5476625                           1.5813765
+##  [8,]                          1.5053887                          -0.3310087
+##  [9,]                         -0.9672307                          -0.6936311
+## [10,]                         -1.0904373                          -0.9652532
+```
+]
+]
+
+---
+&lt;br&gt;
+
+###Análisis
+
+
+```r
+pca_ama &lt;- vegan::rda(std_ama, scale = T)
+
+pca_ama
+```
+
+```
+## Call: rda(X = std_ama, scale = T)
+## 
+##               Inertia Rank
+## Total              18     
+## Unconstrained      18   13
+## Inertia is correlations 
+## 
+## Eigenvalues for unconstrained axes:
+##   PC1   PC2   PC3   PC4   PC5   PC6   PC7   PC8   PC9  PC10  PC11  PC12  PC13 
+## 6.804 5.292 2.140 1.435 1.024 0.543 0.373 0.144 0.104 0.060 0.040 0.037 0.005
+```
+
+&lt;br&gt;
+
+La inercia es otra forma de llamarle a la varianza .
+---
+&lt;br&gt;
+
+¿Qué nos dicen los eigenvalores?
+
+
+&lt;table class="table lightable-minimal" style='font-size: 18px; margin-left: auto; margin-right: auto; font-family: "Trebuchet MS", verdana, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Componente principal &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Eigenvalores &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Varianza explicada (%) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CP1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.37 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CP2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.29 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CP3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.12 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+&lt;br&gt;
+
+&lt;br&gt;
+
+
+
+
+&lt;table class="table lightable-minimal" style='font-size: 10px; margin-left: auto; margin-right: auto; font-family: "Trebuchet MS", verdana, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; vari &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Uso &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Manejo &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pc1_1 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pc2_1 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Vegetal &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Semicultivado &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1255867 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7009096 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Vegetal &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Semicultivado &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1535932 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5956392 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Vegetal &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Semicultivado &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1245669 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1276795 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Vegetal &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Semicultivado &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2752514 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2181845 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Vegetal &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Semicultivado &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4388363 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0977610 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Vegetal &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Semicultivado &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3479594 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1332148 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Vegetal &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Semicultivado &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.8945192 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.1672353 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Grano &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cultivado &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.9102110 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.6210296 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Grano &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cultivado &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2680368 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.6572518 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Grano &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cultivado &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3479191 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.7973650 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Grano &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cultivado &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2545351 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2509709 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Vegetal &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Semicultivado &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7436742 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3414908 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Vegetal &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Agreste &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1813552 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.4680484 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Vegetal &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Ruderal &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2133128 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.5874491 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+class: center
+
+&lt;br&gt;
+
+![](etno_practica_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
+
+---
+background-image: url("peña.jpg")
+background-size: cover
+class: right
+
+## .grey[Análisis de correspondencias]
+
+---
+&lt;br&gt;
+
+Importe y manejo de datos
+
+
+```
+## # A tibble: 6 x 28
+##   sites   Abre  Arxa  Baco  Cate  Cigh  Coal  Dial  Cupr  Frme  Fumi  Futi  Game
+##   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 site 1     1     1     1     0     1     0     1     0     1     0     1     1
+## 2 site 2     1     1     0     0     1     0     1     1     1     0     0     1
+## 3 site 3     1     1     0     1     1     0     1     0     1     1     1     1
+## 4 site 4     1     0     0     0     0     0     1     0     0     1     0     1
+## 5 site 5     1     0     0     0     0     0     1     0     0     1     0     1
+## 6 site 6     1     0     1     0     0     0     0     0     1     1     0     1
+## # … with 15 more variables: Gala &lt;dbl&gt;, Goca &lt;dbl&gt;, Pleo &lt;dbl&gt;, Ligl &lt;dbl&gt;,
+## #   Rupu &lt;dbl&gt;, Thde &lt;dbl&gt;, Dryo &lt;dbl&gt;, Piay &lt;dbl&gt;, Pimo &lt;dbl&gt;, Prse &lt;dbl&gt;,
+## #   Qucr &lt;dbl&gt;, Rici &lt;dbl&gt;, Sael &lt;dbl&gt;, Sede &lt;dbl&gt;, Symi &lt;dbl&gt;
+```
+---
+###Análisis de correspondencias canónico
+
+
+```r
+m_env &lt;- scale(d_site[,-1], scale = T) 
+*cca_sit &lt;- cca(formula = d_ca[,-1] ~ m_env)
+summary(cca_sit)        
+```
+
+```
+## 
+## Call:
+## cca(formula = d_ca[, -1] ~ m_env) 
+## 
+## Partitioning of scaled Chi-square:
+##               Inertia Proportion
+## Total          1.0512     1.0000
+## Constrained    0.3682     0.3502
+## Unconstrained  0.6831     0.6498
+## 
+## Eigenvalues, and their contribution to the scaled Chi-square 
+## 
+## Importance of components:
+##                         CCA1   CCA2    CCA3    CCA4    CA1    CA2     CA3
+## Eigenvalue            0.1589 0.1250 0.05475 0.02952 0.1753 0.1300 0.10034
+## Proportion Explained  0.1511 0.1190 0.05208 0.02808 0.1668 0.1236 0.09545
+## Cumulative Proportion 0.1511 0.2701 0.32215 0.35022 0.5170 0.6406 0.73608
+##                           CA4     CA5     CA6     CA7
+## Eigenvalue            0.09880 0.07225 0.05360 0.05280
+## Proportion Explained  0.09399 0.06873 0.05098 0.05022
+## Cumulative Proportion 0.83007 0.89879 0.94978 1.00000
+## 
+## Accumulated constrained eigenvalues
+## Importance of components:
+##                         CCA1   CCA2    CCA3    CCA4
+## Eigenvalue            0.1589 0.1250 0.05475 0.02952
+## Proportion Explained  0.4315 0.3396 0.14870 0.08018
+## Cumulative Proportion 0.4315 0.7711 0.91982 1.00000
+## 
+## Scaling 2 for species and site scores
+## * Species are scaled proportional to eigenvalues
+## * Sites are unscaled: weighted dispersion equal on all dimensions
+## 
+## 
+## Species scores
+## 
+##           CCA1     CCA2     CCA3      CCA4       CA1      CA2
+## Abre  0.050678 -0.07857  0.02670  0.030265  0.009205  0.13224
+## Arxa -0.302219 -0.22465 -0.17045  0.116806  0.187388 -0.20429
+## Baco  0.108040  1.09349  0.15313  0.323069 -1.329190 -0.41494
+## Cate -0.201761 -0.98758 -1.08918  0.066760 -0.592202 -0.33008
+## Cigh -0.583482  0.01712  0.20792 -0.135539  0.184392 -0.35177
+## Coal -0.775392  0.44465  0.31736 -0.376856  1.354984 -0.45956
+## Dial -0.144207  0.15059  0.07751 -0.069897  0.042087  0.20196
+## Cupr -0.225299 -0.07089  0.14320  0.186710  0.469879 -0.69160
+## Frme -0.137137  0.03606 -0.13831 -0.043563 -0.912565 -0.39105
+## Fumi  0.239156 -0.23607 -0.04785  0.035891  0.191273  0.14004
+## Futi -0.895584  0.21376 -0.09488 -0.264867  0.238783 -0.06241
+## Game  0.108791  0.05337  0.02426 -0.060813 -0.033492  0.12883
+## Gala  0.058902  0.35281 -0.22173  0.103980 -0.598724  0.14667
+## Goca -0.876714  1.47470 -0.67221 -0.004995  0.417197 -0.04552
+## Pleo -0.221639 -0.74535  0.33148 -0.353757 -0.173798 -0.61439
+## Ligl  1.173436  0.24361 -0.33266  0.018677 -0.722929 -0.36046
+## Rupu  1.208248 -0.46188 -0.60273 -0.361362  0.411851  1.11617
+## Thde  0.050678 -0.07857  0.02670  0.030265  0.009205  0.13224
+## Dryo  1.292039  0.43631  0.68237  0.028371  0.306698  1.50425
+## Piay  0.195503  0.96708 -0.26087 -0.013815 -0.581530  0.86491
+## Pimo  0.617991  0.48772  0.15316  0.215116 -0.466989 -0.28688
+## Prse  0.016849 -0.28306 -0.02216  0.028880 -0.250039  0.03992
+## Qucr -0.323699  0.05616  0.36040  0.163332  1.193743 -0.77162
+## Rici  0.267478  0.10167  0.07081 -0.118164  0.028309  0.08299
+## Sael -0.008862  0.22655 -0.19678 -0.143348 -0.173379 -0.19015
+## Sede  0.138585 -0.23533  0.24107 -0.181448  0.463314  0.17505
+## Symi -0.334736 -0.31786  0.08861  0.492962 -0.047665  0.29200
+## 
+## 
+## Site scores (weighted averages of species scores)
+## 
+##           CCA1    CCA2    CCA3    CCA4      CA1      CA2
+## row1  -0.66949  1.9720 -1.0193  0.9692 -1.08222  0.65169
+## row2  -0.44646 -0.6181  0.8388 -1.2151 -0.72004 -0.46521
+## row3  -0.77011 -1.1935 -0.7587 -1.2060 -0.67261  0.01778
+## row4   2.20962  0.8776 -0.4654 -1.0330 -0.08084  1.07813
+## row5   1.16697 -0.1817  2.4156  0.7055  0.69424  1.93037
+## row6   1.42327  1.1386 -0.4699  0.9741 -1.57616 -1.48158
+## row7   1.24376 -1.2822 -0.9207 -1.8056  0.90454  1.15421
+## row8   0.15479 -0.6936 -2.3905  1.9203 -0.51179 -0.67794
+## row9  -0.29521 -0.9890  1.9806  1.3325  0.87126 -1.39575
+## row10  0.02848 -1.5900  0.2631  4.1890 -0.42587  1.69424
+## row11 -1.25425 -0.1934  1.1954 -0.3335  0.79335 -0.17639
+## row12 -1.37652  0.9673  0.3821 -1.7902  1.91662 -0.74273
+## 
+## 
+## Site constraints (linear combinations of constraining variables)
+## 
+##          CCA1    CCA2    CCA3    CCA4      CA1      CA2
+## row1  -1.2852  1.4494 -0.3816  1.0018 -1.08222  0.65169
+## row2  -0.4982 -0.0315  1.1806 -0.9975 -0.72004 -0.46521
+## row3  -0.7464 -1.4837 -0.6326 -1.3075 -0.67261  0.01778
+## row4   1.6762  0.4847 -0.1401 -1.0294 -0.08084  1.07813
+## row5   0.9079  0.3879  1.5048  1.0861  0.69424  1.93037
+## row6   1.5013  0.7375  0.6879 -0.3556 -1.57616 -1.48158
+## row7   0.7403 -1.4085 -1.0654  0.3067  0.90454  1.15421
+## row8   0.3428 -0.4914 -1.5457  1.4410 -0.51179 -0.67794
+## row9   0.5797 -0.7208  0.4465  1.2437  0.87126 -1.39575
+## row10 -1.0595 -0.7557 -0.3686 -0.2724 -0.42587  1.69424
+## row11 -1.0825 -0.6106  1.5975  0.2580  0.79335 -0.17639
+## row12 -0.4682  1.5000 -0.9628 -1.0117  1.91662 -0.74273
+## 
+## 
+## Biplot scores for constraining variables
+## 
+##                      CCA1    CCA2    CCA3    CCA4 CA1 CA2
+## m_envaltitude    -0.19818 -0.8157 -0.2030  0.5041   0   0
+## m_envbasal_area  -0.05534  0.1705  0.9611  0.2103   0   0
+## m_envslope       -0.90757  0.1326  0.0846 -0.3893   0   0
+## m_envorientation  0.46806 -0.6681  0.5158 -0.2617   0   0
+```
+
+???
+
+El análisis de correspondencias canónicas permite que la ordenación de los sitios está  constreñida a la relación lineal con la matriz de las variables ambientales. Dicho de otro modo, la ordenación que vemos está considerando las especies y las propiedades del sitio al mismo tiempo.
+
+Estandarización de la matriz de variables ambientales para que la matriz sea dimensionalmente homogénea (que las unidades están en las mismas unidades) 
+---
+
+
+.pull-left[
+
+```r
+ccor_sit
+```
+
+```
+##               CCA1        CCA2
+## site 1  -1.2851900  1.44943830
+## site 2  -0.4982408 -0.03150325
+## site 3  -0.7463638 -1.48372177
+## site 4   1.6761967  0.48472536
+## site 5   0.9078814  0.38789862
+## site 6   1.5012693  0.73753280
+## site 7   0.7403001 -1.40849453
+## site 8   0.3428409 -0.49143404
+## site 9   0.5796882 -0.72082656
+## site 10 -1.0594653 -0.75570377
+## site 11 -1.0825466 -0.61064897
+## site 12 -0.4682372  1.49995577
+```
+]
+
+.pull-right[
+
+```r
+ccor_spe
+```
+
+```
+##              CCA1        CCA2
+## Abre  0.050677735 -0.07856517
+## Arxa -0.302218657 -0.22465438
+## Baco  0.108039644  1.09348555
+## Cate -0.201761469 -0.98757790
+## Cigh -0.583481707  0.01711559
+## Coal -0.775391897  0.44465340
+## Dial -0.144207423  0.15058875
+## Cupr -0.225299113 -0.07089141
+## Frme -0.137136892  0.03606241
+## Fumi  0.239156361 -0.23607171
+## Futi -0.895584398  0.21375583
+## Game  0.108791000  0.05337483
+## Gala  0.058901698  0.35280659
+## Goca -0.876713605  1.47469704
+## Pleo -0.221638820 -0.74535053
+## Ligl  1.173435620  0.24360804
+## Rupu  1.208248411 -0.46188459
+## Thde  0.050677735 -0.07856517
+## Dryo  1.292039072  0.43631199
+## Piay  0.195503363  0.96708183
+## Pimo  0.617991040  0.48771748
+## Prse  0.016848861 -0.28306364
+## Qucr -0.323698544  0.05616008
+## Rici  0.267478206  0.10166719
+## Sael -0.008861533  0.22654964
+## Sede  0.138584750 -0.23532692
+## Symi -0.334736463 -0.31785688
+```
+]
+
+---
+class: center
+
+&lt;br&gt;
+
+
+```r
+ccor_env
+```
+
+```
+##                    CCA1       CCA2
+## altitude    -0.19818181 -0.8157403
+## basal area  -0.05533824  0.1704887
+## slope       -0.90757499  0.1325562
+## orientation  0.46806096 -0.6681243
+```
+---
+class: center
+
+![](etno_practica_files/figure-html/CCA graf-1.png)&lt;!-- --&gt;
+
+---
+background-image: url("https://elblogdecricri.files.wordpress.com/2013/04/919-pasarela_milan_1_large.jpg")
+background-size: cover
+class: bottom
+
+---
+background-image: url("CXL_vista.JPG")
+background-size: cover
+
+### Percepción al cambio climático
+
+
+
+---
+&lt;br&gt;
+
+###Manejo de los datos
+
+
+```
+## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   ID = col_character()
+## )
+```
+
+```
+## See spec(...) for full column specifications.
+```
+
+```
+## # A tibble: 34 x 7
+##    ID    sie_clim_mes sie_clim_dif tem_mes_dif per_vie_dif per_pla_dif pre_tdif
+##    &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+##  1 SG1              1           NA           0           1           0        0
+##  2 SG2              0            0           0           0           0        0
+##  3 SG3              0            1           0           0          NA        0
+##  4 SG4              1            1           1           1           0        1
+##  5 SG5              0            0           1           0           0        0
+##  6 SG6              0            0           0           1           0        0
+##  7 SG7              0            1           0           1           0        0
+##  8 SG8              0            0           0           0           1        0
+##  9 SG9              1            0           0           1           0        1
+## 10 SG10            NA            1           0           0           0        1
+## # … with 24 more rows
+```
+---
+
+&lt;br&gt;
+
+### Manejo de los datos
+  
+
+
+
+```
+## # A tibble: 34 x 8
+##    ID    sie_clim_mes sie_clim_dif tem_mes_dif per_vie_dif per_pla_dif pre_tdif
+##    &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+##  1 SG1              1            0           0           1           0        0
+##  2 SG2              0            0           0           0           0        0
+##  3 SG3              0            1           0           0           0        0
+##  4 SG4              1            1           1           1           0        1
+##  5 SG5              0            0           1           0           0        0
+##  6 SG6              0            0           0           1           0        0
+##  7 SG7              0            1           0           1           0        0
+##  8 SG8              0            0           0           0           1        0
+##  9 SG9              1            0           0           1           0        1
+## 10 SG10             0            1           0           0           0        1
+## # … with 24 more rows, and 1 more variable: cambio &lt;dbl&gt;
+```
+
+---
+&lt;br&gt;
+
+### Ajuste del modelo
+
+La diferencia entre la devianza de los modelos sigue aproximadamente una distribución de X² por lo que es posible hacer una prueba para X² para probar la diferencias entre los modelos.
+
+
+```r
+m_varc &lt;- glm(
+  formula = cambio ~ sie_clim_dif + per_vie_dif + pre_tdif + tem_mes_dif + per_pla_dif + sie_clim_mes,
+  family = binomial("logit"), data = d_varcomp)
+```
+---
+### Simplificación
+
+Eliminación de términos por pasos.
+
+
+```r
+m_varc2 &lt;- update(m_varc, ~ . - sie_clim_mes)
+m_varc3 &lt;- update(m_varc2, ~ . - per_pla_dif)
+m_varc4 &lt;- update(m_varc2, ~ sie_clim_dif + per_vie_dif + tem_mes_dif + pre_tdif)
+m_varc5 &lt;- update(m_varc4, ~ . - pre_tdif)
+m_varc6 &lt;- update(m_varc5, ~ . - tem_mes_dif)
+m_varc7 &lt;- update(m_varc6, ~ . - per_vie_dif)
+m_var_null &lt;- glm(formula = cambio ~ 1, family = binomial("logit"), data = d_varcomp)
+```
+---
+
+
+Modelo mínimo en donde la percepción de cambios en el mes de siembra fue significativo.
+
+
+```r
+anova(m_varc7, test = "Chisq") # Compara con el modelo nulo.
+```
+
+```
+## Analysis of Deviance Table
+## 
+## Model: binomial, link: logit
+## 
+## Response: cambio
+## 
+## Terms added sequentially (first to last)
+## 
+## 
+##              Df Deviance Resid. Df Resid. Dev Pr(&gt;Chi)  
+## NULL                            33     45.234           
+## sie_clim_dif  1   6.3551        32     38.879   0.0117 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+De acuerdo con el modelo, el cambio en "log-odds" cuando la persona dijo haber percibido cambios en la fecha de
+siembra equivale a 1.8971.
+
+Este es el incremento en probabilidad: 0.87
+
+
+```r
+exp(1.8971)/(1 + exp(1.8971))
+```
+
+```
+## [1] 0.869563
+```
+
+
+---
+### Prueba del modelo
+
+Los resultados de la prueba de Hosmer-Lemenshow muestran (p = 1) indican que no hay evidencia de que el modelo tenga un ajuste mediocre a los datos. Sin embargo, como la muestra es pequeña es posible que simplemente la prueba no tenga suficiente poder para detectar errores de especificación del modelo.
+
+
+```r
+ResourceSelection::hoslem.test(x = m_varc7$y, y = fitted(m_varc7))
+```
+
+```
+## 
+## 	Hosmer and Lemeshow goodness of fit (GOF) test
+## 
+## data:  m_varc7$y, fitted(m_varc7)
+## X-squared = 2.592e-30, df = 8, p-value = 1
+```
+
+---
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
