@@ -8,9 +8,10 @@ La segunda presentación corresponde al módulo semipráctico, y comprende una m
 
 [Link a la presentación del módulo semi-práctico](https://gonzalupus.github.io/Etnobotanica-de-plantas-silvestres/etno_practica.html)
 
-Para navegar la presentación pueden usar las siguiente características:
+Para navegar la presentación del módulo 2 pueden usar las siguiente características:
 
 * Tecla F: Pantalla completa
+
 * Tecla O: Despliega un panel con todas las diapositivas para navegar más rápidamente. 
 
 ### Literatura citada para la presentación
@@ -30,11 +31,15 @@ Wickham H. y Grolemund G. (2017). R for Data Science: Import, Tidy, Transform, V
 
 ### Paquetes de R empleados
 
-[Tidyverse](https://www.tidyverse.org/)
+Para el manejo de datos: [Tidyverse](https://www.tidyverse.org/)
  
+Funciones para análisis multivariados: 
+
 [Vegan](https://vegan.r-forge.r-project.org/>)
 
-[Documentación del paquete](https://cran.r-project.org/web/packages/vegan/vegan.pdf)
+[Documentación del paquete Vegan](https://cran.r-project.org/web/packages/vegan/vegan.pdf)
+
+Presentación:
 
 [Xaringan](https://github.com/yihui/xaringan)
 
