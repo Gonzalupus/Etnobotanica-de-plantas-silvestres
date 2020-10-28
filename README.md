@@ -16,17 +16,23 @@ Para navegar la presentación del módulo 2 pueden usar las siguiente caracterí
 
 ### Literatura citada para la presentación
 
-Casas, A., & Caballero, J. (1996). Traditional management and morphological variation in Leucaena esculenta (Fabaceae: Mimosoideae) in the Mixtec region of Guerrero, Mexico. Economic Botany, 50(2), 167–181. [https://doi.org/10.1007/BF02861449](https://doi.org/10.1007/BF02861449)
+Leal Alencar, N., de Sousa Araújo, T.A., de Amorim, E.L.C. *et al*. (2010). The Inclusion and Selection of Medicinal Plants in Traditional Pharmacopoeias—Evidence in Support of the Diversification Hypothesis. *Econ Bot* 64, 68–79. [https://doi.org/10.1007/s12231-009-9104-5](https://doi.org/10.1007/s12231-009-9104-5)
 
-Crawley, M. J. (2007). The R Book. John Wiley & Sons.
+Alencar, N. L., F. R. Santoro, and U. P. Albuquerque. (2014). What is the role of exotic medicinal plants in local medical systems? A study from the perspective of utilitarian redundancy. *Brazilian Journal of Pharmacognosy* 24:506–515.
 
-Mapes, C., Caballero, J., Espitia, E., & Bye, R. A. (1996). Morphophysiological variation in some Mexican species of vegetable Amaranthus: Evolutionary tendencies under domestication. Genetic Resources and Crop Evolution, 43(3), 283–290. [https://doi.org/10.1007/BF00123280](https://doi.org/10.1007/BF00123280).
+Casas, A., & Caballero, J. (1996). Traditional management and morphological variation in Leucaena esculenta (Fabaceae: Mimosoideae) in the Mixtec region of Guerrero, Mexico. *Economic Botany*, 50(2), 167–181. [https://doi.org/10.1007/BF02861449](https://doi.org/10.1007/BF02861449)
 
-Martínez-Ballesté, A., Martorell, C., & Caballero, J. (2006). Cultural or ecological sustainability? The effect of cultural change on Sabal palm management among the lowland Maya of Mexico. Ecology and Society, 11(2), 27. [https://doi.org/10.5751/ES-01803-110227](https://doi.org/10.5751/ES-01803-110227)
+Crawley, M. J. (2007). *The R Book*. John Wiley & Sons.
 
-Quinn, G. P., & Keough, M. J. (2002). Experimental Design and Data Analysis for Biologists. Cambridge University Press.
+Mapes, C., Caballero, J., Espitia, E., & Bye, R. A. (1996). Morphophysiological variation in some Mexican species of vegetable Amaranthus: Evolutionary tendencies under domestication. *Genetic Resources and Crop Evolution*, 43(3), 283–290. [https://doi.org/10.1007/BF00123280](https://doi.org/10.1007/BF00123280).
 
-Wickham H. y Grolemund G. (2017). R for Data Science: Import, Tidy, Transform, Visualize, and Model Data. O’Reilly. Disponible gratuito [aquí](https://r4ds.had.co.nz/).
+Martínez-Ballesté, A., Martorell, C., & Caballero, J. (2006). Cultural or ecological sustainability? The effect of cultural change on Sabal palm management among the lowland Maya of Mexico. *Ecology and Society*, 11(2), 27. [https://doi.org/10.5751/ES-01803-110227](https://doi.org/10.5751/ES-01803-110227)
+
+Quinn, G. P., & Keough, M. J. (2002). *Experimental Design and Data Analysis for Biologists*. Cambridge University Press.
+
+Santos, F. S., U. P. Albuquerque, L. Martins, A. L. Silva, A. L. B. Nascimento, and J. M. Monteiro. 2014. An ethnopharmacological assessment of the use of plants against parasitic diseases in humans and animals. *Journal of Ethnopharmacology* 155:1332–1341.
+
+Wickham H. y Grolemund G. (2017). *R for Data Science: Import, Tidy, Transform, Visualize, and Model Data*. O’Reilly. Disponible gratuito [aquí](https://r4ds.had.co.nz/).
 
 
 ### Paquetes de R empleados
