@@ -16,13 +16,17 @@ Para navegar la presentación del módulo 2 pueden usar las siguiente caracterí
 
 ### Literatura citada para la presentación
 
-Leal Alencar, N., de Sousa Araújo, T.A., de Amorim, E.L.C. *et al*. (2010). The Inclusion and Selection of Medicinal Plants in Traditional Pharmacopoeias—Evidence in Support of the Diversification Hypothesis. *Econ Bot* 64, 68–79. [https://doi.org/10.1007/s12231-009-9104-5](https://doi.org/10.1007/s12231-009-9104-5)
+Alencar, N. L., de Sousa Araújo, T.A., de Amorim, E.L.C. *et al*. (2010). The Inclusion and Selection of Medicinal Plants in Traditional Pharmacopoeias—Evidence in Support of the Diversification Hypothesis. *Econ Bot* 64, 68–79. [https://doi.org/10.1007/s12231-009-9104-5](https://doi.org/10.1007/s12231-009-9104-5)
 
 Alencar, N. L., F. R. Santoro, and U. P. Albuquerque. (2014). What is the role of exotic medicinal plants in local medical systems? A study from the perspective of utilitarian redundancy. *Brazilian Journal of Pharmacognosy* 24:506–515.
+
+Beltrán-Rodríguez et al. (2017). Apropiación cultural de una planta europea en la herbolaria tradicional mexicana: El caso del ajenjo (*Artesima absinthium* L.Asteraceae).*Revista Etnobiologia*. Vol 15, Num. 2. Agosto 2017. pp: 46-67.  
 
 Casas, A., & Caballero, J. (1996). Traditional management and morphological variation in Leucaena esculenta (Fabaceae: Mimosoideae) in the Mixtec region of Guerrero, Mexico. *Economic Botany*, 50(2), 167–181. [https://doi.org/10.1007/BF02861449](https://doi.org/10.1007/BF02861449)
 
 Crawley, M. J. (2007). *The R Book*. John Wiley & Sons.
+
+de Albuquerque UP. (2006). Re-examining hypotheses concerning the use and knowledge of medicinal plants: a study in the Caatinga vegetation of NE Brazil. *J Ethnobiol Ethnomed*. doi: [10.1186/1746-4269-2-30](10.1186/1746-4269-2-30).
 
 Mapes, C., Caballero, J., Espitia, E., & Bye, R. A. (1996). Morphophysiological variation in some Mexican species of vegetable Amaranthus: Evolutionary tendencies under domestication. *Genetic Resources and Crop Evolution*, 43(3), 283–290. [https://doi.org/10.1007/BF00123280](https://doi.org/10.1007/BF00123280).
 
