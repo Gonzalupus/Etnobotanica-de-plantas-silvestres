@@ -34,7 +34,7 @@ Martínez-Ballesté, A., Martorell, C., & Caballero, J. (2006). Cultural or ecol
 
 Quinn, G. P., & Keough, M. J. (2002). *Experimental Design and Data Analysis for Biologists*. Cambridge University Press.
 
-Santos, F. S., U. P. Albuquerque, L. Martins, A. L. Silva, A. L. B. Nascimento, and J. M. Monteiro. 2014. An ethnopharmacological assessment of the use of plants against parasitic diseases in humans and animals. *Journal of Ethnopharmacology* 155:1332–1341.
+Santos, F. S., U. P. Albuquerque, L. Martins, A. L. Silva, A. L. B. Nascimento, and J. M. Monteiro. (2014). An ethnopharmacological assessment of the use of plants against parasitic diseases in humans and animals. *Journal of Ethnopharmacology* 155:1332–1341.
 
 Wickham H. y Grolemund G. (2017). *R for Data Science: Import, Tidy, Transform, Visualize, and Model Data*. O’Reilly. Disponible gratuito [aquí](https://r4ds.had.co.nz/).
 
